@@ -28,6 +28,20 @@ const hasNextPage = (html: string) => /aria-label=\\?"Go to next page/.test(html
 
 const clean = (s: string | undefined | null) => (s ?? "").replace(/\s+/g, " ").trim();
 
+/** The text a shopper sees: Amazon nests <script> blocks (page code, a-state JSON) inside some widgets. */
+function visibleText(el: HTMLElement | null | undefined): string {
+  if (!el) return "";
+  const copy = parse(el.outerHTML);
+  for (const junk of copy.querySelectorAll("script, style, noscript, template, form")) junk.remove();
+  return clean(copy.text);
+}
+
+/** Buyable only with a real offer and a visible Add to Cart button; unavailable pages keep an empty form. */
+function hasOffer(doc: HTMLElement): boolean {
+  const offer = doc.querySelector("form#addToCart input[name=offerListingID]")?.getAttribute("value")?.trim();
+  return !!offer && !!doc.querySelector("#add-to-cart-button");
+}
+
 export function money(s: string | undefined | null): number | null {
   const m = clean(s).replace(/,/g, "").match(/(\d+(?:\.\d+)?)/);
   return m ? Number(m[1]) : null;
@@ -205,19 +219,20 @@ export function parseProduct(html: string, asin: string, base: string): Product 
     priceText,
     rating: num(doc.querySelector("#acrPopover")?.getAttribute("title")),
     reviews: num(doc.querySelector("#acrCustomerReviewText")?.text),
-    availability: clean(doc.querySelector("#availability")?.text) || null,
+    availability: visibleText(doc.querySelector("#availability")) || null,
     bullets: doc.querySelectorAll("#feature-bullets li span.a-list-item").map((e) => clean(e.text)).filter(Boolean),
     images,
     url: `${base}/dp/${asin}`,
-    canAddToCart: !!doc.querySelector("form#addToCart input[name=offerListingID][value]"),
+    canAddToCart: hasOffer(doc),
     variants: parseVariants(html),
   };
 }
 
 /** The buy-box form fields that /cart/add-to-cart needs (incl. CSRF + offer listing id). */
 export function buyBoxForm(html: string): URLSearchParams | null {
-  const form = parse(html).querySelector("form#addToCart");
-  if (!form) return null;
+  const doc = parse(html);
+  const form = doc.querySelector("form#addToCart");
+  if (!form || !hasOffer(doc)) return null;
   const fd = new URLSearchParams();
   for (const i of form.querySelectorAll("input")) {
     const n = i.getAttribute("name");

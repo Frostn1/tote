@@ -1,6 +1,6 @@
 {
   "name": "@frostn/amazon-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shop Amazon from Claude or any MCP agent: search with photos, your real cart, orders, price alerts, and buying with your confirmation.",
   "keywords": [
     "mcp",

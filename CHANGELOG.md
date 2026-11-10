@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-09 — 1.0.1
+### Fixed
+- Product availability shows only the visible text; Amazon's nested page scripts no longer leak into it
+- Sold-out sizes and colours no longer report that they can be added to the cart
+
 ## 2026-11-05 — 1.0.0 (first public release)
 ### Added
 - MCP server for Amazon: search with photos and prices, product details, size/colour options, your real cart (add, remove, tick items), orders and package tracking, price-drop alerts

@@ -55,6 +55,26 @@ describe("product", () => {
     expect(form.get("anti-csrftoken-a2z")).toBeTruthy();
     expect(form.has("submit.buy-now")).toBe(false);
   });
+
+  // Shapes taken from live pages (Nov 2026): Amazon nests scripts inside #availability.
+  test("availability is the visible text, without nested scripts", () => {
+    const page = (inner: string) => `<span id="productTitle">Shirt</span><div id="availability">${inner}</div>`;
+    const inStock = parseProduct(page(`<span class="a-color-success"> In Stock </span><script type="a-state" data-a-state='{"key":"x"}'>{"isInternal":false,"asin":"B0DFPDJXF1"}</script><br/>`), "B0DFPDJXF1", B);
+    expect(inStock.availability).toBe("In Stock");
+    const gone = parseProduct(page(`<div id="all-offers-display"><form class="aok-hidden"><input type="hidden" value="true"></form></div>
+      <span class="a-color-price">Currently unavailable.</span><script type="application/javascript">P.when("A","load").execute(function(A){ ueLogError({}); });</script>`), "B0F493442R", B);
+    expect(gone.availability).toBe("Currently unavailable.");
+  });
+
+  test("an unavailable page with an empty buy-box form is not addable", () => {
+    const html = `<span id="productTitle">Shirt</span><div id="availability"><span>Currently unavailable.</span></div>
+      <form id="addToCart"><input type="hidden" name="ASIN" value="B0F493442R"><input type="hidden" name="offerListingID" value=""></form>`;
+    expect(parseProduct(html, "B0F493442R", B).canAddToCart).toBe(false);
+    expect(buyBoxForm(html)).toBeNull();
+    const buyable = html.replace('name="offerListingID" value=""', 'name="offerListingID" value="abc123"') + `<input id="add-to-cart-button" type="submit">`;
+    expect(parseProduct(buyable, "B0F493442R", B).canAddToCart).toBe(true);
+    expect(buyBoxForm(buyable)?.get("offerListingID")).toBe("abc123");
+  });
 });
 
 describe("cart", () => {

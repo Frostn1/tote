@@ -85,7 +85,6 @@ export function mobileIdentity(desktopUa: string) {
     userAgentMetadata: {
       brands: [
         { brand: "Chromium", version: major },
-        { brand: "Google Chrome", version: major },
         { brand: "Not?A_Brand", version: "99" },
       ],
       fullVersion: full,

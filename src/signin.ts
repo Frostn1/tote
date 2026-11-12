@@ -50,8 +50,7 @@ async function launch(headless: boolean): Promise<BrowserContext> {
   return chromium.launchPersistentContext(BROWSER_PROFILE, {
     headless,
     viewport: headless ? { width: 1000, height: 800 } : null,
-    args: ["--disable-blink-features=AutomationControlled", ...(headless ? [] : ["--window-size=1100,900"])],
-    ignoreDefaultArgs: ["--enable-automation"],
+    args: headless ? [] : ["--window-size=1100,900"],
   });
 }
 
@@ -92,8 +91,8 @@ async function waitForSignIn(
       // approve notification) — the user is done, so don't wait for them to leave it.
       // Checked with the client's own desktop request, which also reads the greeting reliably.
       const cookies = Object.fromEntries(jar.map((c) => [c.name, c.value]));
-      // Store a desktop identity: the HTTP client must keep getting Amazon's desktop pages.
-      const ua = userAgent ?? (await page.evaluate(() => navigator.userAgent)).replace("HeadlessChrome", "Chrome");
+      // Store the browser's real desktop identity for the HTTP client.
+      const ua = userAgent ?? (await page.evaluate(() => navigator.userAgent));
       const name = await confirmedName(host, cookies, ua);
       if (name !== null) {
         const account: AccountInfo = { name: name || null, signedInAt: new Date().toISOString() };
@@ -238,7 +237,7 @@ export async function startLinkSignIn(session: Session, { ttlMs = LINK_TTL_MS } 
       await p.close().catch(() => {});
       if (target && allowedRequest(target, true)) await page.goto(target).catch(() => {});
     });
-    const ua = (await page.evaluate(() => navigator.userAgent)).replace("HeadlessChrome", "Chrome");
+    const ua = await page.evaluate(() => navigator.userAgent);
     const cdp = await ctx.newCDPSession(page);
     await cdp.send("Emulation.setUserAgentOverride", { userAgent: withAgentTag(ua) });
 

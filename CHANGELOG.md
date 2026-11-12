@@ -5,6 +5,9 @@
 - Renamed to Basketly: package `@frostn/basketly`, command `basketly`
 - The old `@frostn/amazon-mcp` package is deprecated
 - Settings environment variables and the `~/.amazon-agent` session folder are unchanged
+- Never retries around a block: a CAPTCHA or 503 now stops the guest session too, instead of starting a new one
+- The agent tag can't be turned off; the sign-in browser no longer hides its automation flags
+- Default user agent no longer claims to be a Mac
 
 ## 2026-11-09 — 1.0.1
 ### Fixed

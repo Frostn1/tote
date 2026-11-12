@@ -44,6 +44,7 @@
 > **Read this first**
 > - **Not affiliated with Amazon.** "Amazon" is a trademark of Amazon.com, Inc., named only to describe what this works with.
 > - **Amazon's [Conditions of Use](https://www.amazon.com/gp/help/customer/display.html?nodeId=508088) apply to you, and they restrict automated access.** Amazon may challenge, sign out or block agents like this one. Use it for your own shopping, at human pace, at your own risk.
+> - **It runs as your own signed-in session at human pace, and says it's an AI agent.** If Amazon asks you to stop, stop using it.
 > - **Nothing is bought without your confirmation.** See [How buying works](#how-buying-works).
 > - **No warranty.** MIT licensed; see [LICENSE](LICENSE) and [TERMS.md](TERMS.md).
 
@@ -175,8 +176,9 @@ Add `--json` for raw data.
 ## Privacy and identification
 
 - Your session lives in `~/.amazon-agent/session.json` (mode 600) on your computer. Nothing is sent anywhere except Amazon, plus the tunnel when you use `serve` or the sign-in link.
-- Every request says it comes from an AI shopping agent: `basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)` is added to the user agent. It never pretends to be a person. You can change the text with `AMAZON_AGENT_TAG`.
-- It never tries to get past a CAPTCHA or bot check. If Amazon challenges a request, it says so and stops.
+- Every request says it comes from an AI shopping agent: `basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)` is added to the user agent. It never pretends to be a person. The tag can't be turned off. `AMAZON_AGENT_TAG` adds contact text to it.
+- It never tries to get past a CAPTCHA or bot check, and it doesn't switch to a new session when blocked. If Amazon challenges a request, it says so and stops.
+- The sign-in browser is ordinary Playwright Chromium with its automation flags left on; nothing hides that it is automated.
 - Requests are throttled to human pace.
 
 ## Sign-in options
@@ -197,7 +199,7 @@ Add `--json` for raw data.
 | `AMAZON_AGENT_HOME` | `~/.amazon-agent` | session, browser profile, serve secret |
 | `AMAZON_SIGNIN_LINK` | off (stdio), on (serve) | allow the sign-in link |
 | `AMAZON_MCP_PORT` / `AMAZON_MCP_PUBLIC_URL` | `8765` / none | `serve` port and fixed public URL |
-| `AMAZON_AGENT_TAG` | see above | the agent identification text |
+| `AMAZON_AGENT_TAG` | none | extra contact text added to the agent tag |
 
 ## Development
 

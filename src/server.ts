@@ -61,6 +61,7 @@ const server = new McpServer(
       "Each result starts with a markdown summary and product images: show those to the user, not the JSON (the JSON is for your reasoning).",
       "In apps that render MCP Apps (e.g. Claude chat), search, product and cart results also appear as interactive cards with photos, prices and Add to cart / Remove buttons — don't repeat the whole list in text; give a short pick and why.",
       "Cart tools act on the user's own Amazon cart once they are signed in; otherwise on an anonymous guest cart. Check amazon_session_status; if not signed in (or a tool says the sign-in expired), call amazon_signin and send the user the link it returns — the USER signs in on Amazon's real page. Never ask for their password.",
+      "BLOCKS: if a tool says Amazon blocked or challenged a request, stop and tell the user. Don't retry, don't reset the session to get around it.",
       "ORDERS & ALERTS: amazon_orders (history, reorder), amazon_track (where's my package), amazon_watch (\"tell me when X drops under $Y\"; checked daily with a push alert).",
       "OPTIONS: for products with sizes/colours (amazon_product shows 🎛️ options), ask the user's choice for clothing/shoes, then use amazon_variant or amazon_cart_add with options.",
       "BUYING: you CAN place orders for the user. When they want to buy, tick the right items (amazon_cart_select) and call amazon_order_buy — the app then shows THEM a confirmation dialog (items, address, card, total) and the order is placed only if they accept. Don't tell the user you can't check out, and don't ask them to type yes in chat: offer \"Want me to buy it? You'll get a confirmation to approve.\" If amazon_order_buy says the app can't show the dialog, show the order card (amazon_order_preview: they press Place order) or give the Checkout link. Nothing is ever bought without their confirmation.",
@@ -264,7 +265,7 @@ server.registerTool(
 
 server.registerTool(
   "amazon_session_reset",
-  { description: "Guest mode only: start a fresh anonymous session (clears the guest cart). Use if requests keep getting blocked.", inputSchema: {} },
+  { description: "Guest mode only: start a fresh anonymous session (clears the guest cart). Only when the user asks for it. Never use it to get around a block or CAPTCHA.", inputSchema: {} },
   run(async () => {
     await client.resetSession();
     return reply("Started a fresh guest session.", { ok: true });

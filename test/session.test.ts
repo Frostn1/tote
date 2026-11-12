@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { mkdtempSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { BlockedError, PurchaseBlockedError, Session, SignInRequiredError } from "../src/http.ts";
+import { AGENT_TAG, BlockedError, PurchaseBlockedError, Session, SignInRequiredError } from "../src/http.ts";
 
 const realFetch = globalThis.fetch;
 afterEach(() => {
@@ -110,6 +110,20 @@ describe("Session account mode", () => {
   });
 });
 
+describe("Session guest blocks", () => {
+  test("a guest block makes exactly one fetch and throws without renewing", async () => {
+    let calls = 0;
+    globalThis.fetch = (async () => {
+      calls++;
+      return new Response("captcha", { status: 503, headers: { "content-type": "text/html" } });
+    }) as unknown as typeof fetch;
+    const s = new Session({ sessionFile: null, minIntervalMs: 0 });
+    await expect(s.request("https://www.amazon.com/s?k=pen")).rejects.toThrow(BlockedError);
+    expect(calls).toBe(1);
+    expect(s.hasSession).toBe(false);
+  });
+});
+
 describe("purchase guard", () => {
   test.each([
     "https://www.amazon.com/gp/buy/spc/handlers/display.html",
@@ -168,7 +182,7 @@ describe("verifyStatus", () => {
 });
 
 describe("agent identification", () => {
-  test("every request carries the agent tag", async () => {
+  test("every request carries the fixed agent tag", async () => {
     let ua = "";
     globalThis.fetch = (async (_u: string, init: RequestInit) => {
       ua = (init.headers as Record<string, string>)["User-Agent"]!;
@@ -176,8 +190,8 @@ describe("agent identification", () => {
     }) as unknown as typeof fetch;
     await new Session({ sessionFile: null, minIntervalMs: 0 }).request("https://www.amazon.com/s?k=pen", { raw: true });
     expect(ua).toContain("Chrome/");
-    expect(ua).toContain("basketly/");
-    expect(ua).toContain("AI shopping agent");
+    expect(AGENT_TAG).toStartWith("basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly");
+    expect(ua).toContain(AGENT_TAG);
   });
 
   test("the tag is added once", async () => {

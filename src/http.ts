@@ -21,22 +21,22 @@ export const AGENT_HOME = process.env.AMAZON_AGENT_HOME ?? join(homedir(), ".ama
 export const DEFAULT_SESSION_FILE = join(AGENT_HOME, "session.json");
 
 /**
- * Every request this client sends says it comes from an AI agent (Amazon's Associates policy and
- * Conditions of Use expect agents to identify themselves). Override the text with AMAZON_AGENT_TAG;
- * set it to "off" only if you understand you're then not identifying the agent.
+ * Every request this client sends says it comes from Basketly, an AI shopping agent. The fixed tag
+ * cannot be disabled or replaced; AMAZON_AGENT_TAG appends optional contact text.
  */
+const FIXED_AGENT_TAG = "basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)";
 export const AGENT_TAG =
-  process.env.AMAZON_AGENT_TAG === "off"
-    ? ""
-    : (process.env.AMAZON_AGENT_TAG ?? "basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)");
+  process.env.AMAZON_AGENT_TAG === undefined
+    ? FIXED_AGENT_TAG
+    : `${FIXED_AGENT_TAG.slice(0, -1)}; contact: ${process.env.AMAZON_AGENT_TAG})`;
 
 /** Append the agent tag to a browser user agent (idempotent). */
 export function withAgentTag(ua: string): string {
-  return !AGENT_TAG || ua.includes(AGENT_TAG) ? ua : `${ua} ${AGENT_TAG}`;
+  return ua.includes(AGENT_TAG) ? ua : `${ua} ${AGENT_TAG}`;
 }
 
 const DEFAULT_UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
+  "Mozilla/5.0 (compatible) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
 
 /** Cookies Amazon only sets for a signed-in account. */
 const ACCOUNT_COOKIES = ["at-main", "sess-at-main", "x-main", "at-acbuk", "x-acbuk"];
@@ -69,7 +69,7 @@ export class BlockedError extends Error {
     super(
       signedIn
         ? `Amazon asked for a security check (${status}). Call amazon_signin and send the user the link — they solve the check there.`
-        : `Amazon is challenging requests right now (${status}); try again later — nothing was retried around it.`,
+        : `Amazon blocked or challenged this request (${status}). Stopped without retrying. Wait before trying again, and stop using Basketly if Amazon keeps blocking it.`,
     );
     this.name = "BlockedError";
   }
@@ -280,10 +280,9 @@ export class Session {
 
   /**
    * Request with cookies + throttle.
-   * Guest: on a block (captcha / 503) renew once and retry; a second block throws.
-   * Account: never drop cookies (that would sign the user out) — throw so the user can act.
+   * A block (captcha / 503) always throws immediately without renewing or retrying.
    */
-  async request(url: string, opts: RequestOptions = {}, attempt = 0): Promise<Response> {
+  async request(url: string, opts: RequestOptions = {}): Promise<Response> {
     if (PURCHASE_URL.test(url) && !checkoutAllowed(url, opts)) throw new PurchaseBlockedError(url);
     const wait = this.last + this.gap - Date.now();
     if (wait > 0) await Bun.sleep(wait);
@@ -331,14 +330,7 @@ export class Session {
     if (opts.raw) return res;
     const head = await peekHtml(res);
     const blocked = res.status === 503 || current.includes("/errors/validateCaptcha") || isCaptcha(head);
-    if (blocked) {
-      // No nested renewal while replaying the cart, and never for a signed-in account.
-      if (attempt === 0 && !this.restoring && !wasSignedIn) {
-        await this.renew();
-        return this.request(url, opts, 1);
-      }
-      throw new BlockedError(url, res.status, wasSignedIn);
-    }
+    if (blocked) throw new BlockedError(url, res.status, wasSignedIn);
     if (wasSignedIn && (current.includes("/ap/signin") || isSignedOutPage(head))) throw new SignInRequiredError();
     return res;
   }

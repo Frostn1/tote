@@ -147,6 +147,10 @@ describe("client messages", () => {
     expect(m.userAgent).toStartWith("Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36");
     expect(m.userAgent).toContain("AI shopping agent"); // the sign-in browser identifies itself too
     expect(m.userAgentMetadata).toMatchObject({ mobile: true, platform: "Android", fullVersion: "156.0.8078.4" });
+    expect(m.userAgentMetadata.brands).toEqual([
+      { brand: "Chromium", version: "156" },
+      { brand: "Not?A_Brand", version: "99" },
+    ]);
   });
 
   test("token compare", () => {

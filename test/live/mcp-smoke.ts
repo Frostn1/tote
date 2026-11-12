@@ -8,7 +8,7 @@ await c.connect(
   new StdioClientTransport({
     command: "bun",
     args: [new URL("../../src/mcp.ts", import.meta.url).pathname],
-    env: { ...process.env, AMAZON_SESSION_FILE: "/tmp/amazon-mcp-smoke-session.json" } as Record<string, string>,
+    env: { ...process.env, AMAZON_SESSION_FILE: "/tmp/basketly-smoke-session.json" } as Record<string, string>,
   }),
 );
 console.log("tools:", (await c.listTools()).tools.map((t) => t.name).join(", "));

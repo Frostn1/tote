@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-11 — 1.1.0
+### Changed
+- Renamed to Basketly: package `@frostn/basketly`, command `basketly`
+- The old `@frostn/amazon-mcp` package is deprecated
+- Settings environment variables and the `~/.amazon-agent` session folder are unchanged
+
 ## 2026-11-09 — 1.0.1
 ### Fixed
 - Product availability shows only the visible text; Amazon's nested page scripts no longer leak into it

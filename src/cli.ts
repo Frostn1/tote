@@ -28,17 +28,17 @@ const [cmd, sub, ...rest] = positionals;
 const num = (s?: string) => (s == null ? undefined : Number(s));
 
 const usage = `usage:
-  amazon-mcp                    run the MCP server (stdio) — what your agent app starts
-  amazon-mcp serve [--port 8765] [--public-url URL] [--local] [--new-url]
-                                MCP over HTTP for claude.ai and the Claude phone app
-  amazon-mcp signin [--link] | status | signout     (--link: one-time URL to sign in from your phone)
-  amazon-mcp suggest <prefix> [--dept electronics]
-  amazon-mcp search <query> [--page N] [--sort price-asc-rank] [--filters rh,rh] [--min 10] [--max 50]
-  amazon-mcp product <asin|url>
-  amazon-mcp cart view | add <asin|url> [--qty N] | remove <asin|url>
-  amazon-mcp orders | track [orderId]
-  amazon-mcp watch [list] | add <asin> <price> | remove <asin> | check
-  amazon-mcp session reset            (guest mode only)
+  basketly                    run the MCP server (stdio) — what your agent app starts
+  basketly serve [--port 8765] [--public-url URL] [--local] [--new-url]
+                              MCP over HTTP for claude.ai and the Claude phone app
+  basketly signin [--link] | status | signout     (--link: one-time URL to sign in from your phone)
+  basketly suggest <prefix> [--dept electronics]
+  basketly search <query> [--page N] [--sort price-asc-rank] [--filters rh,rh] [--min 10] [--max 50]
+  basketly product <asin|url>
+  basketly cart view | add <asin|url> [--qty N] | remove <asin|url>
+  basketly orders | track [orderId]
+  basketly watch [list] | add <asin> <price> | remove <asin> | check
+  basketly session reset            (guest mode only)
   add --json to any command for raw data`;
 
 async function main(): Promise<[unknown, string]> {

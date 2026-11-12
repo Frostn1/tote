@@ -1,7 +1,7 @@
 {
-  "name": "@frostn/amazon-mcp",
-  "version": "1.0.1",
-  "description": "Shop Amazon from Claude or any MCP agent: search with photos, your real cart, orders, price alerts, and buying with your confirmation.",
+  "name": "@frostn/basketly",
+  "version": "1.1.0",
+  "description": "An MCP server for Amazon shopping: search with photos, your real cart, orders, price alerts, and buying with your confirmation. Not affiliated with Amazon.",
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -11,16 +11,16 @@
     "ai-agent",
     "mcp-server"
   ],
-  "homepage": "https://github.com/Frostn1/amazon-mcp#readme",
+  "homepage": "https://github.com/Frostn1/basketly#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Frostn1/amazon-mcp.git"
+    "url": "git+https://github.com/Frostn1/basketly.git"
   },
-  "bugs": "https://github.com/Frostn1/amazon-mcp/issues",
+  "bugs": "https://github.com/Frostn1/basketly/issues",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "amazon-mcp": "src/bin.ts"
+    "basketly": "src/bin.ts"
   },
   "main": "src/index.ts",
   "files": [

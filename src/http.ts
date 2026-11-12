@@ -28,7 +28,7 @@ export const DEFAULT_SESSION_FILE = join(AGENT_HOME, "session.json");
 export const AGENT_TAG =
   process.env.AMAZON_AGENT_TAG === "off"
     ? ""
-    : (process.env.AMAZON_AGENT_TAG ?? "amazon-mcp/1.0 (AI shopping agent; +https://github.com/Frostn1/amazon-mcp)");
+    : (process.env.AMAZON_AGENT_TAG ?? "basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)");
 
 /** Append the agent tag to a browser user agent (idempotent). */
 export function withAgentTag(ua: string): string {

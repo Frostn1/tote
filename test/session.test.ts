@@ -176,7 +176,7 @@ describe("agent identification", () => {
     }) as unknown as typeof fetch;
     await new Session({ sessionFile: null, minIntervalMs: 0 }).request("https://www.amazon.com/s?k=pen", { raw: true });
     expect(ua).toContain("Chrome/");
-    expect(ua).toContain("amazon-mcp/");
+    expect(ua).toContain("basketly/");
     expect(ua).toContain("AI shopping agent");
   });
 

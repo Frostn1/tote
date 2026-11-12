@@ -1,10 +1,10 @@
-# Ordering terms (Amazon MCP)
+# Ordering terms (Basketly)
 
 > **Draft, not legal advice.** Have a lawyer review these before anyone other than the author uses the
 > ordering feature.
 
 By pressing **I agree** in the order card, you accept these terms. They apply to placing Amazon orders
-through Amazon MCP ("the tool").
+through Basketly ("the tool").
 
 1. **Your account, your orders.** The tool acts only in your own Amazon account, on your own
    computer, when you tell it to. Every order is placed by you pressing **Place order** in the order

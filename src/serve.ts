@@ -1,4 +1,4 @@
-// `amazon-mcp serve`: the same MCP server over HTTP, so claude.ai and the Claude phone app can use it
+// `basketly serve`: the same MCP server over HTTP, so claude.ai and the Claude phone app can use it
 // as a custom connector. It listens on 127.0.0.1 only; a tunnel (or your own URL) makes it reachable.
 // The endpoint path holds a long random secret, so the URL itself is the key: every other path is a 404.
 import { randomBytes, randomUUID } from "node:crypto";
@@ -90,9 +90,9 @@ export async function serve(client: AmazonClient, opts: ServeOptions): Promise<{
 }
 
 export function serveInstructions(url: string, { local = false, quickTunnel = true } = {}): string {
-  if (local) return [`Amazon MCP is running at:`, ``, `  ${url}`, ``, `Only this computer can reach it (--local).`].join("\n");
+  if (local) return [`Basketly is running at:`, ``, `  ${url}`, ``, `Only this computer can reach it (--local).`].join("\n");
   return [
-    `Amazon MCP is online. Your connector URL:`,
+    `Basketly is online. Your connector URL:`,
     ``,
     `  ${url}`,
     ``,

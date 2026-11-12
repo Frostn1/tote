@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 // MCP server over stdio — for apps on this computer (Claude Desktop, Claude Code, Cursor, …).
-// For the Claude phone app / claude.ai, see serve.ts (`amazon-mcp serve`).
+// For the Claude phone app / claude.ai, see serve.ts (`basketly serve`).
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { AmazonClient } from "./client.ts";
 import { createServer } from "./server.ts";

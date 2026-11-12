@@ -52,7 +52,7 @@ const asin = z.string().describe("ASIN (e.g. B0FB2WX15J) or any Amazon product U
 export function createServer(client: AmazonClient, { linkEnabled }: { linkEnabled: boolean }): McpServer {
 const LINK_ENABLED = linkEnabled;
 const server = new McpServer(
-  { name: "amazon", version: pkg.version },
+  { name: "basketly", version: pkg.version },
   {
     instructions: [
       "USE THESE TOOLS for anything involving Amazon or buying a product for the user: finding products, comparing prices, \"add to my cart\", checking the cart. They talk to Amazon directly with the user's own signed-in session and return product cards with photos and prices.",

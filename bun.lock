@@ -1,8 +1,9 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "amazon-api",
+      "name": "@frostn/basketly",
       "dependencies": {
         "@modelcontextprotocol/ext-apps": "^1",
         "@modelcontextprotocol/sdk": "^1.32.2",

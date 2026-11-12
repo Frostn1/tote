@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
-// amazon-mcp                → MCP server over stdio (what Claude Desktop / Claude Code / Cursor run)
-// amazon-mcp serve          → MCP server over HTTP for claude.ai and the Claude phone app
-// amazon-mcp <command> …    → the command line (signin, search, cart, orders, …)
+// basketly                → MCP server over stdio (what Claude Desktop / Claude Code / Cursor run)
+// basketly serve          → MCP server over HTTP for claude.ai and the Claude phone app
+// basketly <command> …    → the command line (signin, search, cart, orders, …)
 import { parseArgs } from "node:util";
 
 if (process.argv[2] === "--help" || process.argv[2] === "-h") process.argv[2] = "help";

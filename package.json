@@ -1,5 +1,5 @@
 {
-  "name": "@frostn/basketly",
+  "name": "@frostn/tote",
   "version": "1.1.0",
   "description": "An MCP server for Amazon shopping: search with photos, your real cart, orders, price alerts, and buying with your confirmation. Not affiliated with Amazon.",
   "keywords": [
@@ -11,16 +11,16 @@
     "ai-agent",
     "mcp-server"
   ],
-  "homepage": "https://github.com/Frostn1/basketly#readme",
+  "homepage": "https://github.com/Frostn1/tote#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Frostn1/basketly.git"
+    "url": "git+https://github.com/Frostn1/tote.git"
   },
-  "bugs": "https://github.com/Frostn1/basketly/issues",
+  "bugs": "https://github.com/Frostn1/tote/issues",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "basketly": "src/bin.ts"
+    "tote": "src/bin.ts"
   },
   "main": "src/index.ts",
   "files": [

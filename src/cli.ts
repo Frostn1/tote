@@ -28,17 +28,17 @@ const [cmd, sub, ...rest] = positionals;
 const num = (s?: string) => (s == null ? undefined : Number(s));
 
 const usage = `usage:
-  basketly                    run the MCP server (stdio) — what your agent app starts
-  basketly serve [--port 8765] [--public-url URL] [--local] [--new-url]
+  tote                        run the MCP server (stdio) — what your agent app starts
+  tote serve [--port 8765] [--public-url URL] [--local] [--new-url]
                               MCP over HTTP for claude.ai and the Claude phone app
-  basketly signin [--link] | status | signout     (--link: one-time URL to sign in from your phone)
-  basketly suggest <prefix> [--dept electronics]
-  basketly search <query> [--page N] [--sort price-asc-rank] [--filters rh,rh] [--min 10] [--max 50]
-  basketly product <asin|url>
-  basketly cart view | add <asin|url> [--qty N] | remove <asin|url>
-  basketly orders | track [orderId]
-  basketly watch [list] | add <asin> <price> | remove <asin> | check
-  basketly session reset            (guest mode only)
+  tote signin [--link] | status | signout         (--link: one-time URL to sign in from your phone)
+  tote suggest <prefix> [--dept electronics]
+  tote search <query> [--page N] [--sort price-asc-rank] [--filters rh,rh] [--min 10] [--max 50]
+  tote product <asin|url>
+  tote cart view | add <asin|url> [--qty N] | remove <asin|url>
+  tote orders | track [orderId]
+  tote watch [list] | add <asin> <price> | remove <asin> | check
+  tote session reset                (guest mode only)
   add --json to any command for raw data`;
 
 async function main(): Promise<[unknown, string]> {

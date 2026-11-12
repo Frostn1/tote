@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "@frostn/basketly",
+      "name": "@frostn/tote",
       "dependencies": {
         "@modelcontextprotocol/ext-apps": "^1",
         "@modelcontextprotocol/sdk": "^1.32.2",

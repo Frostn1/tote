@@ -2,7 +2,7 @@
 
 ## 2026-11-11 — 1.1.0
 ### Changed
-- Renamed to Basketly: package `@frostn/basketly`, command `basketly`
+- Renamed to Tote: package `@frostn/tote`, command `tote`
 - The old `@frostn/amazon-mcp` package is deprecated
 - Settings environment variables and the `~/.amazon-agent` session folder are unchanged
 - Never retries around a block: a CAPTCHA or 503 now stops the guest session too, instead of starting a new one

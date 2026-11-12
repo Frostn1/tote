@@ -21,10 +21,10 @@ export const AGENT_HOME = process.env.AMAZON_AGENT_HOME ?? join(homedir(), ".ama
 export const DEFAULT_SESSION_FILE = join(AGENT_HOME, "session.json");
 
 /**
- * Every request this client sends says it comes from Basketly, an AI shopping agent. The fixed tag
+ * Every request this client sends says it comes from Tote, an AI shopping agent. The fixed tag
  * cannot be disabled or replaced; AMAZON_AGENT_TAG appends optional contact text.
  */
-const FIXED_AGENT_TAG = "basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly)";
+const FIXED_AGENT_TAG = "tote/1.1 (AI shopping agent; +https://github.com/Frostn1/tote)";
 export const AGENT_TAG =
   process.env.AMAZON_AGENT_TAG === undefined
     ? FIXED_AGENT_TAG
@@ -69,7 +69,7 @@ export class BlockedError extends Error {
     super(
       signedIn
         ? `Amazon asked for a security check (${status}). Call amazon_signin and send the user the link — they solve the check there.`
-        : `Amazon blocked or challenged this request (${status}). Stopped without retrying. Wait before trying again, and stop using Basketly if Amazon keeps blocking it.`,
+        : `Amazon blocked or challenged this request (${status}). Stopped without retrying. Wait before trying again, and stop using Tote if Amazon keeps blocking it.`,
     );
     this.name = "BlockedError";
   }

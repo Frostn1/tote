@@ -190,7 +190,7 @@ describe("agent identification", () => {
     }) as unknown as typeof fetch;
     await new Session({ sessionFile: null, minIntervalMs: 0 }).request("https://www.amazon.com/s?k=pen", { raw: true });
     expect(ua).toContain("Chrome/");
-    expect(AGENT_TAG).toStartWith("basketly/1.1 (AI shopping agent; +https://github.com/Frostn1/basketly");
+    expect(AGENT_TAG).toStartWith("tote/1.1 (AI shopping agent; +https://github.com/Frostn1/tote");
     expect(ua).toContain(AGENT_TAG);
   });
 

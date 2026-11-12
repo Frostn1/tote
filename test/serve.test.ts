@@ -1,4 +1,4 @@
-// `basketly serve`: the HTTP endpoint answers MCP only on the secret path. No Amazon traffic here.
+// `tote serve`: the HTTP endpoint answers MCP only on the secret path. No Amazon traffic here.
 import { describe, expect, test } from "bun:test";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -27,7 +27,7 @@ describe("serve endpoint", () => {
     expect(r1.status).toBe(200);
     const sid = r1.headers.get("mcp-session-id")!;
     expect(sid).toBeTruthy();
-    expect((await result(r1)).result.serverInfo.name).toBe("basketly");
+    expect((await result(r1)).result.serverInfo.name).toBe("tote");
 
     const h = { ...headers, "mcp-session-id": sid, "mcp-protocol-version": "2025-06-18" };
     await handle(new Request(`${base}/mcp/${SECRET}`, { method: "POST", headers: h, body: JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }) }));

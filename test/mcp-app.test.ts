@@ -13,7 +13,7 @@ beforeAll(async () => {
     new StdioClientTransport({
       command: "bun",
       args: [new URL("../src/mcp.ts", import.meta.url).pathname],
-      env: { ...process.env, AMAZON_SESSION_FILE: "/tmp/basketly-app-test.json" } as Record<string, string>,
+      env: { ...process.env, AMAZON_SESSION_FILE: "/tmp/tote-app-test.json" } as Record<string, string>,
     }),
   );
 });
